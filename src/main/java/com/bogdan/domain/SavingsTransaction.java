@@ -1,19 +1,28 @@
 package com.bogdan.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by zoomout on 12/18/16.
  */
+@Entity
 public class SavingsTransaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date date;
-    private String descriptoin;
+    private String description;
     private String type;
     private String status;
     private double amount;
     private BigDecimal availableBalance;
+
+    @ManyToOne
+    @JoinColumn(name = "savings_account_id")
     private SavingsAccount savingsAccount;
 
     public Long getId() {
@@ -32,12 +41,12 @@ public class SavingsTransaction {
         this.date = date;
     }
 
-    public String getDescriptoin() {
-        return descriptoin;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptoin(String descriptoin) {
-        this.descriptoin = descriptoin;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
@@ -80,11 +89,11 @@ public class SavingsTransaction {
         this.savingsAccount = savingsAccount;
     }
 
-    public SavingsTransaction(Date date, String descriptoin, String type, String status,
+    public SavingsTransaction(Date date, String description, String type, String status,
         double amount, BigDecimal availableBalance, SavingsAccount savingsAccount) {
 
         this.date = date;
-        this.descriptoin = descriptoin;
+        this.description = description;
         this.type = type;
         this.status = status;
         this.amount = amount;
@@ -93,5 +102,13 @@ public class SavingsTransaction {
     }
 
     public SavingsTransaction() {
+    }
+
+    @Override
+    public String  toString() {
+        return "SavingsTransaction{" + "id=" + id + ", date=" + date + ", description='"
+          + description + '\'' + ", type='" + type + '\'' + ", status='" + status + '\''
+          + ", amount=" + amount + ", availableBalance=" + availableBalance + ", savingsAccount="
+          + savingsAccount + '}';
     }
 }

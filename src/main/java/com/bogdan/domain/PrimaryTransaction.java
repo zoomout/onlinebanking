@@ -1,19 +1,27 @@
 package com.bogdan.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by zoomout on 12/18/16.
  */
+@Entity
 public class PrimaryTransaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date date;
-    private String descriptoin;
+    private String description;
     private String type;
     private String status;
     private double amount;
     private BigDecimal availableBalance;
+
+    @ManyToOne
+    @JoinColumn(name = "primary_account_id")
     private PrimaryAccount primaryAccount;
 
     public Long getId() {
@@ -32,12 +40,12 @@ public class PrimaryTransaction {
         this.date = date;
     }
 
-    public String getDescriptoin() {
-        return descriptoin;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptoin(String descriptoin) {
-        this.descriptoin = descriptoin;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
@@ -80,11 +88,11 @@ public class PrimaryTransaction {
         this.primaryAccount = primaryAccount;
     }
 
-    public PrimaryTransaction(Date date, String descriptoin, String type, String status,
+    public PrimaryTransaction(Date date, String description, String type, String status,
         double amount, BigDecimal availableBalance, PrimaryAccount primaryAccount) {
 
         this.date = date;
-        this.descriptoin = descriptoin;
+        this.description = description;
         this.type = type;
         this.status = status;
         this.amount = amount;
@@ -93,6 +101,14 @@ public class PrimaryTransaction {
     }
 
     public PrimaryTransaction() {
+    }
+
+    @Override
+    public String toString() {
+        return "PrimaryTransaction{" + "id=" + id + ", date=" + date + ", description='"
+          + description + '\'' + ", type='" + type + '\'' + ", status='" + status + '\''
+          + ", amount=" + amount + ", availableBalance=" + availableBalance + ", primaryAccount="
+          + primaryAccount + '}';
     }
 
 
