@@ -4,6 +4,7 @@ package com.bogdan.controller;
 import com.bogdan.dao.RoleDao;
 import com.bogdan.domain.User;
 import com.bogdan.domain.security.UserRole;
+import com.bogdan.service.RoleService;
 import com.bogdan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,11 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
-    @Autowired
 
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private RoleDao roleDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -62,7 +66,7 @@ public class HomeController {
             return "signup";
         } else {
             Set<UserRole> userRoles = new HashSet<>();
-            userRoles.add(new UserRole(user, roleDao.findByName("ROLE_USER")));
+            userRoles.add(new UserRole(user, roleService.findByName("ROLE_USER")));
             userService.createUser(user, userRoles);
             return "redirect:/";
         }

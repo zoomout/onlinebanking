@@ -27,13 +27,10 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private AccountService accountService; //TODO
+    @Autowired
+    private AccountService accountService;
 
     public void save(User user) {
         userDao.save(user);
@@ -48,14 +45,14 @@ public class UserServiceImpl implements UserService {
             String encryptedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encryptedPassword);
 
-            for (UserRole ur : userRoles) {
-                roleDao.save(ur.getRole());
-            }
+//            for (UserRole ur : userRoles) {
+//                roleDao.save(ur.getRole());
+//            }
 
             user.getUserRoles().addAll(userRoles);
 
-//            user.setPrimaryAccount(accountService.createPrimaryAccount()); //TODO
-//            user.setSavingsAccount(accountService.createSavingsAccount()); //TODO
+            user.setPrimaryAccount(accountService.createPrimaryAccount());
+            user.setSavingsAccount(accountService.createSavingsAccount());
 
             localUser = userDao.save(user);
         }
