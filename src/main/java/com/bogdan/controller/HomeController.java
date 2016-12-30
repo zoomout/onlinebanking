@@ -2,6 +2,8 @@ package com.bogdan.controller;
 
 
 import com.bogdan.dao.RoleDao;
+import com.bogdan.domain.PrimaryAccount;
+import com.bogdan.domain.SavingsAccount;
 import com.bogdan.domain.User;
 import com.bogdan.domain.security.UserRole;
 import com.bogdan.service.RoleService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -70,5 +73,17 @@ public class HomeController {
             userService.createUser(user, userRoles);
             return "redirect:/";
         }
+    }
+
+    @RequestMapping("/userFront")
+    public String userFront(Principal principal, Model model) {
+        User user = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        SavingsAccount savingsAccount = user.getSavingsAccount();
+
+        model.addAttribute("primaryAccount", primaryAccount);
+        model.addAttribute("savingsAccount", savingsAccount);
+
+        return "userFront";
     }
 }
