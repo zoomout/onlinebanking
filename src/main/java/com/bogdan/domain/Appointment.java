@@ -1,7 +1,9 @@
 package com.bogdan.domain;
 
 import javax.persistence.*;
+
 import java.util.Date;
+
 
 /**
  * Created by zoomout on 12/18/16.
@@ -10,16 +12,20 @@ import java.util.Date;
 public class Appointment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @Column(columnDefinition = "timestamp with time zone")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
     private String location;
     private String description;
     private boolean confirmed;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     public Long getId() {
         return id;
@@ -61,18 +67,18 @@ public class Appointment {
         this.confirmed = confirmed;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
     public String toString() {
         return "Appointment{" + "id=" + id + ", date=" + date + ", location='" + location + '\''
-          + ", description='" + description + '\'' + ", confirmed=" + confirmed + ", user=" + user
+          + ", description='" + description + '\'' + ", confirmed=" + confirmed + ", customer=" + customer
           + '}';
     }
 }

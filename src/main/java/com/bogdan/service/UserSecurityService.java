@@ -1,7 +1,7 @@
 package com.bogdan.service;
 
 import com.bogdan.dao.UserDao;
-import com.bogdan.domain.User;
+import com.bogdan.domain.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
-        if (null == user) {
+        Customer customer = userDao.findByUsername(username);
+        if (null == customer) {
             LOG.warn("Username {} not found", username);
             throw new UsernameNotFoundException("Username " + username + " not found");
         }
-        return user;
+        return customer;
     }
 }

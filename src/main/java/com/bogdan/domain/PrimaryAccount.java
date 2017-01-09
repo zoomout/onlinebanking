@@ -13,7 +13,7 @@ import java.util.List;
 public class PrimaryAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private int accountNumber;
     private BigDecimal accountBalance;

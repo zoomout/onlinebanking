@@ -1,0 +1,23 @@
+# database configuration
+
+docker rm -f postgres
+docker run --name postgres -e POSTGRES_PASSWORD=postgresPass -d -p 5432:5432 postgres:9.1
+docker exec -it postgres bash
+psql -U postgres
+\l
+
+create schema onlinebanking;
+dn\
+
+ALTER DATABASE postgres SET search_path TO onlinebanking;
+ALTER USER postgres SET search_path to onlinebanking;
+\q
+
+psql -U postgres
+# start application
+
+insert into "role" (role_id,"name") values ('0', 'ROLE_ADMIN');
+insert into "role" (role_id,"name") values ('1', 'ROLE_USER');
+
+\q
+exit

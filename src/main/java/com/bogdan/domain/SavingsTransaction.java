@@ -1,6 +1,5 @@
 package com.bogdan.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,9 +11,13 @@ import java.util.Date;
 @Entity
 public class SavingsTransaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @Column(columnDefinition = "timestamp with time zone")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
     private String description;
     private String type;
     private String status;
@@ -89,8 +92,8 @@ public class SavingsTransaction {
         this.savingsAccount = savingsAccount;
     }
 
-    public SavingsTransaction(Date date, String description, String type, String status,
-        double amount, BigDecimal availableBalance, SavingsAccount savingsAccount) {
+    public SavingsTransaction(Date date, String description, String type, String status, double amount, BigDecimal availableBalance,
+      SavingsAccount savingsAccount) {
 
         this.date = date;
         this.description = description;
@@ -105,10 +108,9 @@ public class SavingsTransaction {
     }
 
     @Override
-    public String  toString() {
-        return "SavingsTransaction{" + "id=" + id + ", date=" + date + ", description='"
-          + description + '\'' + ", type='" + type + '\'' + ", status='" + status + '\''
-          + ", amount=" + amount + ", availableBalance=" + availableBalance + ", savingsAccount="
+    public String toString() {
+        return "SavingsTransaction{" + "id=" + id + ", date=" + date + ", description='" + description + '\'' + ", type='" + type + '\''
+          + ", status='" + status + '\'' + ", amount=" + amount + ", availableBalance=" + availableBalance + ", savingsAccount="
           + savingsAccount + '}';
     }
 }

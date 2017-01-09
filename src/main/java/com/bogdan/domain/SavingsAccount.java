@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class SavingsAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private int accountNumber;
     private BigDecimal accountBalance;

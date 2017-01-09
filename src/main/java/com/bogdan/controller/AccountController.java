@@ -1,9 +1,8 @@
 package com.bogdan.controller;
 
-import com.bogdan.domain.PrimaryAccount;
-import com.bogdan.domain.SavingsAccount;
-import com.bogdan.domain.User;
+import com.bogdan.domain.*;
 import com.bogdan.service.AccountService;
+import com.bogdan.service.TransactionService;
 import com.bogdan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by zoomout on 12/28/16.
@@ -27,23 +27,32 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private TransactionService transactionService;
+
     @RequestMapping("/primaryAccount")
     public String primaryAccount(Model model, Principal principal) {
 
-        User user = userService.findByUsername(principal.getName());
-        PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        List<PrimaryTransaction> primaryTransactionList = transactionService.findPrimaryTransactionList(principal.getName());
+
+        Customer customer = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = customer.getPrimaryAccount();
 
         model.addAttribute("primaryAccount", primaryAccount);
+        model.addAttribute("primaryTransactionList", primaryTransactionList);
         return "primaryAccount";
     }
 
     @RequestMapping("/savingsAccount")
     public String savingsAccount(Model model, Principal principal) {
 
-        User user = userService.findByUsername(principal.getName());
-        SavingsAccount savingsAccount = user.getSavingsAccount();
+        List<SavingsTransaction> savingsTransactionList = transactionService.findSavingsTransactionList(principal.getName());
+
+        Customer customer = userService.findByUsername(principal.getName());
+        SavingsAccount savingsAccount = customer.getSavingsAccount();
 
         model.addAttribute("savingsAccount", savingsAccount);
+        model.addAttribute("savingsTransactionList", savingsTransactionList);
 
         return "savingsAccount";
     }

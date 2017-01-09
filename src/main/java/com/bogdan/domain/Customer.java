@@ -16,12 +16,12 @@ import java.util.Set;
  * Created by zoomout on 12/18/16.
  */
 @Entity
-public class User implements UserDetails {
+public class Customer implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userId", nullable = false, updatable = false)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(nullable = false, updatable = false)
+    private Long customerId;
     private String username;
     private String password;
     private String firstName;
@@ -39,14 +39,14 @@ public class User implements UserDetails {
     @OneToOne
     private SavingsAccount savingsAccount;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Appointment> appointmentList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recipient> recipientList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
 
@@ -58,12 +58,12 @@ public class User implements UserDetails {
         this.userRoles = userRoles;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getUsername() {
@@ -182,7 +182,7 @@ public class User implements UserDetails {
 
 //    @Override
 //    public String toString() {
-//        return "User{" + "userId=" + userId + ", username='" + username + '\'' + ", password='"
+//        return "Customer{" + "customerId=" + customerId + ", username='" + username + '\'' + ", password='"
 //          + password + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
 //          + ", email='" + email + '\'' + ", phone='" + phone + '\'' + ", appointmentList="
 //          + appointmentList + ", recipientList=" + recipientList + ", userRoles=" + userRoles + '}';

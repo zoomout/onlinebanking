@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 public class Recipient {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
     private String email;
@@ -19,9 +19,9 @@ public class Recipient {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     @JsonIgnore
-    private User user;
+    private Customer customer;
 
     public Long getId() {
         return id;
@@ -71,18 +71,18 @@ public class Recipient {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
     public String toString() {
         return "Recipient{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\''
           + ", phone='" + phone + '\'' + ", accountNumber='" + accountNumber + '\''
-          + ", description='" + description + '\'' + ", user=" + user + '}';
+          + ", description='" + description + '\'' + ", customer=" + customer + '}';
     }
 }

@@ -27,6 +27,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TransactionService transactionService;
+
     private int accountGen() {
         return ++nextAccountNumber;
     }
@@ -52,48 +55,54 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public void deposit(String accountType, double amount, Principal principal) {
-        changeAmount(accountType, amount, principal, true);
+        Customer customer = userService.findByUsername(principal.getName());
 
+        if (accountType.equalsIgnoreCase("Primary")) {
+            PrimaryAccount primaryAccount = customer.getPrimaryAccount();
+            primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().add(new BigDecimal(amount)));
+            primaryAccountDao.save(primaryAccount);
+
+            PrimaryTransaction primaryTransaction =
+              new PrimaryTransaction(new Date(), "Deposit to Primary Account", "Account", "Finished", amount,
+                primaryAccount.getAccountBalance(), primaryAccount);
+            transactionService.savePrimaryDepositTransaction(primaryTransaction);
+
+        } else if (accountType.equalsIgnoreCase("Savings")) {
+            SavingsAccount savingsAccount = customer.getSavingsAccount();
+            savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().add(new BigDecimal(amount)));
+            savingsAccountDao.save(savingsAccount);
+
+            SavingsTransaction savingsTransaction =
+              new SavingsTransaction(new Date(), "Deposit to savings Account", "Account", "Finished", amount,
+                savingsAccount.getAccountBalance(), savingsAccount);
+            transactionService.saveSavingsDepositTransaction(savingsTransaction);
+        }
     }
 
     public void withdraw(String accountType, double amount, Principal principal) {
-        changeAmount(accountType, amount, principal, false);
-    }
-
-    private void changeAmount(String accountType, double amount, Principal principal,
-      boolean positive) {
-        User user = userService.findByUsername(principal.getName());
+        Customer customer = userService.findByUsername(principal.getName());
 
         if (accountType.equalsIgnoreCase("Primary")) {
-            PrimaryAccount primaryAccount = user.getPrimaryAccount();
-
-            BigDecimal accountBalance = primaryAccount.getAccountBalance();
-            if (positive) {
-                accountBalance.add(new BigDecimal(amount));
-            } else {
-                accountBalance.subtract(new BigDecimal(amount));
-            }
-            primaryAccount.setAccountBalance(accountBalance.subtract(new BigDecimal(amount)));
+            PrimaryAccount primaryAccount = customer.getPrimaryAccount();
+            primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().subtract(new BigDecimal(amount)));
             primaryAccountDao.save(primaryAccount);
 
             Date date = new Date();
 
             PrimaryTransaction primaryTransaction =
-              new PrimaryTransaction(date, "Deposit to Primary Account", "Account", "Finished",
-                amount, accountBalance, primaryAccount);
-            //            transactionService.savePrimaryDepositTransaction(primaryTransaction);
-
+              new PrimaryTransaction(date, "Withdraw from Primary Account", "Account", "Finished", amount,
+                primaryAccount.getAccountBalance(), primaryAccount);
+            transactionService.savePrimaryWithdrawTransaction(primaryTransaction);
         } else if (accountType.equalsIgnoreCase("Savings")) {
-            SavingsAccount savingsAccount = user.getSavingsAccount();
-            savingsAccount.setAccountBalance(
-              savingsAccount.getAccountBalance().subtract(new BigDecimal(amount)));
+            SavingsAccount savingsAccount = customer.getSavingsAccount();
+            savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().subtract(new BigDecimal(amount)));
             savingsAccountDao.save(savingsAccount);
 
             Date date = new Date();
             SavingsTransaction savingsTransaction =
-              new SavingsTransaction(date, "Deposit to savings Account", "Account", "Finished",
-                amount, savingsAccount.getAccountBalance(), savingsAccount);
-            //            transactionService.saveSavingsDepositTransaction(savingsTransaction);
+              new SavingsTransaction(date, "Withdraw from savings Account", "Account", "Finished", amount,
+                savingsAccount.getAccountBalance(), savingsAccount);
+            transactionService.saveSavingsWithdrawTransaction(savingsTransaction);
         }
     }
 

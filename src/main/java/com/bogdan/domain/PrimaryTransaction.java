@@ -11,9 +11,13 @@ import java.util.Date;
 public class PrimaryTransaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @Column(columnDefinition = "timestamp with time zone")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
     private String description;
     private String type;
     private String status;

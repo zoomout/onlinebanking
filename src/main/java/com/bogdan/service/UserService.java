@@ -1,6 +1,6 @@
 package com.bogdan.service;
 
-import com.bogdan.domain.User;
+import com.bogdan.domain.Customer;
 import com.bogdan.domain.security.UserRole;
 
 import java.util.Set;
@@ -10,9 +10,9 @@ import java.util.Set;
  */
 public interface UserService {
 
-    User findByUsername(String username);
+    Customer findByUsername(String username);
 
-    User findByEmail(String email);
+    Customer findByEmail(String email);
 
     boolean checkUserExists(String username, String email);
 
@@ -20,7 +20,7 @@ public interface UserService {
 
     boolean checkEmailExists(String email);
 
-    void save(User user);
+    void save(Customer customer);
 
-    User createUser(User user, Set<UserRole> userRoles);
+    Customer createUser(Customer customer, Set<UserRole> userRoles);
 }
