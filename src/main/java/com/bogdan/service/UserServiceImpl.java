@@ -1,7 +1,7 @@
 package com.bogdan.service;
 
 import com.bogdan.dao.UserDao;
-import com.bogdan.domain.Customer;
+import com.bogdan.domain.User;
 import com.bogdan.domain.security.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,39 +30,40 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AccountService accountService;
 
-    public void save(Customer customer) {
-        userDao.save(customer);
+    public void save(User user) {
+        userDao.save(user);
     }
 
-    public Customer createUser(Customer customer, Set<UserRole> userRoles) {
-        Customer localCustomer = userDao.findByUsername(customer.getUsername());
+    @Override
+    public User saveUser(User user) {
+        return userDao.save(user);
+    }
 
-        if (localCustomer != null) {
-            LOG.info("Customer with username {} already exist. Nothing will be done. ", customer.getUsername());
+    public User createUser(User user, Set<UserRole> userRoles) {
+        User localUser = userDao.findByUsername(user.getUsername());
+
+        if (localUser != null) {
+            LOG.info("User with username {} already exist. Nothing will be done. ", user.getUsername());
         } else {
-            String encryptedPassword = passwordEncoder.encode(customer.getPassword());
-            customer.setPassword(encryptedPassword);
+            String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptedPassword);
 
-//            for (UserRole ur : userRoles) {
-//                roleDao.save(ur.getRole());
-//            }
+            user.getUserRoles().addAll(userRoles);
 
-            customer.getUserRoles().addAll(userRoles);
+            user.setPrimaryAccount(accountService.createPrimaryAccount());
+            user.setSavingsAccount(accountService.createSavingsAccount());
 
-            customer.setPrimaryAccount(accountService.createPrimaryAccount());
-            customer.setSavingsAccount(accountService.createSavingsAccount());
-
-            localCustomer = userDao.save(customer);
+            localUser = userDao.save(user);
         }
 
-        return localCustomer;
+        return localUser;
     }
 
-    public Customer findByUsername(String username) {
+    public User findByUsername(String username) {
         return userDao.findByUsername(username);
     }
 
-    public Customer findByEmail(String email) {
+    public User findByEmail(String email) {
         return userDao.findByEmail(email);
     }
 

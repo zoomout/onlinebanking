@@ -19,9 +19,9 @@ public class Recipient {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
-    private Customer customer;
+    private User user;
 
     public Long getId() {
         return id;
@@ -71,18 +71,18 @@ public class Recipient {
         this.description = description;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "Recipient{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\''
           + ", phone='" + phone + '\'' + ", accountNumber='" + accountNumber + '\''
-          + ", description='" + description + '\'' + ", customer=" + customer + '}';
+          + ", description='" + description + '\'' + ", user=" + user + '}';
     }
 }

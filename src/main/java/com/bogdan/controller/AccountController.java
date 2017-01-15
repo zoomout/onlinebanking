@@ -35,8 +35,8 @@ public class AccountController {
 
         List<PrimaryTransaction> primaryTransactionList = transactionService.findPrimaryTransactionList(principal.getName());
 
-        Customer customer = userService.findByUsername(principal.getName());
-        PrimaryAccount primaryAccount = customer.getPrimaryAccount();
+        User user = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
 
         model.addAttribute("primaryAccount", primaryAccount);
         model.addAttribute("primaryTransactionList", primaryTransactionList);
@@ -48,8 +48,8 @@ public class AccountController {
 
         List<SavingsTransaction> savingsTransactionList = transactionService.findSavingsTransactionList(principal.getName());
 
-        Customer customer = userService.findByUsername(principal.getName());
-        SavingsAccount savingsAccount = customer.getSavingsAccount();
+        User user = userService.findByUsername(principal.getName());
+        SavingsAccount savingsAccount = user.getSavingsAccount();
 
         model.addAttribute("savingsAccount", savingsAccount);
         model.addAttribute("savingsTransactionList", savingsTransactionList);

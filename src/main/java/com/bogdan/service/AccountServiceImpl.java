@@ -55,10 +55,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public void deposit(String accountType, double amount, Principal principal) {
-        Customer customer = userService.findByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName());
 
         if (accountType.equalsIgnoreCase("Primary")) {
-            PrimaryAccount primaryAccount = customer.getPrimaryAccount();
+            PrimaryAccount primaryAccount = user.getPrimaryAccount();
             primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().add(new BigDecimal(amount)));
             primaryAccountDao.save(primaryAccount);
 
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
             transactionService.savePrimaryDepositTransaction(primaryTransaction);
 
         } else if (accountType.equalsIgnoreCase("Savings")) {
-            SavingsAccount savingsAccount = customer.getSavingsAccount();
+            SavingsAccount savingsAccount = user.getSavingsAccount();
             savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().add(new BigDecimal(amount)));
             savingsAccountDao.save(savingsAccount);
 
@@ -80,10 +80,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public void withdraw(String accountType, double amount, Principal principal) {
-        Customer customer = userService.findByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName());
 
         if (accountType.equalsIgnoreCase("Primary")) {
-            PrimaryAccount primaryAccount = customer.getPrimaryAccount();
+            PrimaryAccount primaryAccount = user.getPrimaryAccount();
             primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().subtract(new BigDecimal(amount)));
             primaryAccountDao.save(primaryAccount);
 
@@ -94,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
                 primaryAccount.getAccountBalance(), primaryAccount);
             transactionService.savePrimaryWithdrawTransaction(primaryTransaction);
         } else if (accountType.equalsIgnoreCase("Savings")) {
-            SavingsAccount savingsAccount = customer.getSavingsAccount();
+            SavingsAccount savingsAccount = user.getSavingsAccount();
             savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().subtract(new BigDecimal(amount)));
             savingsAccountDao.save(savingsAccount);
 

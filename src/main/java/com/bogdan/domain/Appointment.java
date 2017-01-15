@@ -24,8 +24,8 @@ public class Appointment {
     private boolean confirmed;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -67,18 +67,18 @@ public class Appointment {
         this.confirmed = confirmed;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "Appointment{" + "id=" + id + ", date=" + date + ", location='" + location + '\''
-          + ", description='" + description + '\'' + ", confirmed=" + confirmed + ", customer=" + customer
+          + ", description='" + description + '\'' + ", confirmed=" + confirmed + ", user=" + user
           + '}';
     }
 }

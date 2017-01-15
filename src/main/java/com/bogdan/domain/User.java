@@ -16,12 +16,13 @@ import java.util.Set;
  * Created by zoomout on 12/18/16.
  */
 @Entity
-public class Customer implements UserDetails {
+@Table(name = "`users`")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false, updatable = false)
-    private Long customerId;
+    private Long userId;
     private String username;
     private String password;
     private String firstName;
@@ -39,14 +40,14 @@ public class Customer implements UserDetails {
     @OneToOne
     private SavingsAccount savingsAccount;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Appointment> appointmentList;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recipient> recipientList;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
 
@@ -58,12 +59,12 @@ public class Customer implements UserDetails {
         this.userRoles = userRoles;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -182,7 +183,7 @@ public class Customer implements UserDetails {
 
 //    @Override
 //    public String toString() {
-//        return "Customer{" + "customerId=" + customerId + ", username='" + username + '\'' + ", password='"
+//        return "User{" + "userId=" + userId + ", username='" + username + '\'' + ", password='"
 //          + password + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
 //          + ", email='" + email + '\'' + ", phone='" + phone + '\'' + ", appointmentList="
 //          + appointmentList + ", recipientList=" + recipientList + ", userRoles=" + userRoles + '}';

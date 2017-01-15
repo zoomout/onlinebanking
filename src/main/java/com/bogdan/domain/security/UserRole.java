@@ -1,7 +1,7 @@
 package com.bogdan.domain.security;
 
 
-import com.bogdan.domain.Customer;
+import com.bogdan.domain.User;
 
 import javax.persistence.*;
 
@@ -16,15 +16,15 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long userRoleId;
 
-    public UserRole(Customer customer, Role role) {
-        this.customer = customer;
+    public UserRole(User user, Role role) {
+        this.user = user;
         this.role = role;
     }
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,12 +41,12 @@ public class UserRole {
         this.userRoleId = userRoleId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Role getRole() {
