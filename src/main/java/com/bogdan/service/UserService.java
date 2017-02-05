@@ -3,6 +3,7 @@ package com.bogdan.service;
 import com.bogdan.domain.User;
 import com.bogdan.domain.security.UserRole;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,4 +26,10 @@ public interface UserService {
     User saveUser(User user);
 
     User createUser(User user, Set<UserRole> userRoles);
+
+    List<User> findUserList();
+
+    void enableUser(String username);
+
+    void disableUser(String username);
 }
